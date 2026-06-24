@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Monetary Policy Infographic & AI Analyst</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #2563EB, #7C3AED);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            border: 1px solid #F1F5F9;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 3px;
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 6px;
+            background: #E2E8F0;
+            border-radius: 5px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #2563EB;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 0 2px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 antialiased">
+
+    <div class="max-w-7xl mx-auto">
+        
+        <header class="text-center mb-10 mt-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-semibold tracking-wider uppercase mb-3">
+                <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                Now Powered by Gemini 2.0 Flash
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black mb-4 gradient-text tracking-tight">Global Interest Rates Policy Desk</h1>
+            <p class="text-base md:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                An executive monetary analytics dashboard. Adjust real-world indicators in our control deck to simulate macroeconomic outcomes, run structural stress-tests with Gemini AI, or consult our built-in Search-Grounded AI Policy Consultant.
+            </p>
+        </header>
+
+        <!-- API Key Header -->
+        <div class="mb-8 flex flex-wrap items-center justify-between gap-4 p-4 bg-white border border-slate-200 rounded-xl shadow-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold">
+                    AI
+                </div>
+                <div>
+                    <h4 class="font-semibold text-sm text-slate-800">Gemini Native Integration</h4>
+                    <p class="text-xs text-slate-500">Fully integrated analysis tools. Paste your Gemini API key below to unlock live AI forecasting.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <span class="text-xs font-medium text-slate-500 whitespace-nowrap">API Key:</span>
+                <input type="password" id="customApiKey" placeholder="Enter Gemini API Key..." class="w-full sm:w-64 px-3 py-1.5 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+
+        <!-- Main Workspace -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
+            
+            <!-- Controls Sidebar -->
+            <div class="lg:col-span-4 space-y-6">
+                <div class="card border-t-4 border-blue-500 h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                            <span>⚙️</span> Policy Rate Controls
+                        </h3>
+                        <button onclick="resetDefaults()" class="text-xs font-semibold text-blue-600 hover:text-blue-800">Reset Defaults</button>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                        Modify central bank base rates and inflation targets. Adjustments instantly sync with all visual models and AI prompts.
+                    </p>
+
+                    <div id="slidersContainer" class="space-y-4">
+                        <!-- Dynamic Sliders Render Here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts & Quick Analysis -->
+            <div class="lg:col-span-8 space-y-6">
+                
+                <!-- Quick AI Action -->
+                <div class="card border-l-4 border-indigo-500 bg-slate-50 flex flex-col md:flex-row items-center justify-between gap-4 py-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">⚡</span>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm md:text-base">Generate Global Executive Briefing</h4>
+                            <p class="text-xs text-slate-500">AI evaluates your current custom settings for yield risks and capital flows.</p>
+                        </div>
+                    </div>
+                    <button id="btnGenerateBrief" onclick="generateAiBrief()" class="w-full md:w-auto px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold text-xs rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white hidden" id="briefSpinner" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>📝 Generate Analysis</span>
+                    </button>
+                </div>
+
+                <!-- Brief Output -->
+                <div id="briefingContainer" class="card border border-indigo-100 hidden">
+                    <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">AI Macro Report</span>
+                        <div class="flex gap-2">
+                            <button onclick="closeBrief()" class="text-xs text-slate-400 hover:text-slate-600">✕ Dismiss</button>
+                        </div>
+                    </div>
+                    <div id="briefingContent" class="text-sm text-slate-700 leading-relaxed prose prose-sm max-w-none">
+                    </div>
+                </div>
+
+                <!-- Visualization Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card">
+                        <h3 class="text-base font-bold mb-4 text-slate-800 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Policy Rate Comparison
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="text-base font-bold mb-4 text-slate-800 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Weighted Global Influence
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="doughnutChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Specialty Tools -->
+        <section class="mb-10 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Governor Speech Drafter -->
+            <div class="card border-t-4 border-violet-500 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">✨ AI Governor Statement</h3>
+                    <p class="text-xs text-slate-500 mb-4">
+                        Simulate an official response from a Central Bank leader based on your settings.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <select id="governorSelect" class="bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-700 outline-none">
+                            <option value="Jerome Powell (US Federal Reserve)">Jerome Powell (Fed)</option>
+                            <option value="Andrew Bailey (Bank of England)">Andrew Bailey (BoE)</option>
+                            <option value="Christine Lagarde (European Central Bank)">Christine Lagarde (ECB)</option>
+                            <option value="Michele Bullock (Reserve Bank of Australia)">Michele Bullock (RBA)</option>
+                            <option value="Martin Schlegel (Swiss National Bank)">Martin Schlegel (SNB)</option>
+                            <option value="Kazuo Ueda (Bank of Japan)">Kazuo Ueda (BoJ)</option>
+                        </select>
+                        <button onclick="draftGovernorSpeech()" class="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white font-semibold text-xs rounded-lg shadow transition-all">
+                            Draft Statement
+                        </button>
+                    </div>
+                </div>
+                <div id="speechBox" class="bg-slate-50 border border-slate-100 rounded-lg p-3 text-xs text-slate-700 leading-relaxed min-h-[140px] custom-scrollbar max-h-56 overflow-y-auto italic">
+                    Select a governor to generate...
+                </div>
+            </div>
+
+            <!-- Yield Curve Tool -->
+            <div class="card border-t-4 border-emerald-500 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-2">✨ US Yield Curve Projector</h3>
+                    <p class="text-xs text-slate-500 mb-4">
+                        Project Treasury yields (2Y, 10Y, 30Y) based on your custom global policy parameters.
+                    </p>
+                    <button onclick="predictYieldCurve()" class="mb-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg shadow transition-all">
+                        Project Yield Curve
+                    </button>
+                </div>
+                <div id="yieldCurveContainer" class="bg-slate-50 border border-slate-100 rounded-lg p-3 min-h-[140px] flex flex-col justify-center">
+                    <p class="text-xs text-slate-500 text-center">Click project to simulate bond market response.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Plotly Relationship Map -->
+        <section class="mb-10">
+            <div class="card border-t-4 border-amber-500">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">Policy Matrix: Interest Rates vs. Inflation</h3>
+                        <p class="text-xs text-slate-500">Visualizing the real rate gap. Central banks further top-left are more restrictive.</p>
+                    </div>
+                </div>
+                <div class="w-full h-[450px]" id="plotlyScatter"></div>
+            </div>
+        </section>
+
+        <!-- Stance Categorization -->
+        <section class="mb-10">
+            <div class="mb-4">
+                <h3 class="text-xl font-bold text-slate-800">Monetary Stance Spectrum</h3>
+                <p class="text-sm text-slate-500">Dynamic segmentation based on your current rate adjustments.</p>
+            </div>
+            <div class="card bg-slate-50 border-t-4 border-emerald-500">
+                <div id="spectrumGrid" class="flex flex-col md:flex-row justify-between items-stretch gap-4">
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Tools Grid -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
+            
+            <!-- Crisis Sandbox -->
+            <div class="lg:col-span-5 space-y-6">
+                <div class="card border-t-4 border-purple-600 h-full flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2">
+                            <span>🧪</span> Macro Stress Sandbox
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                            Inject a global crisis preset to see how policy might shift.
+                        </p>
+                        
+                        <div class="space-y-3">
+                            <button onclick="applyScenario('stagflation')" class="w-full text-left p-3 rounded-lg border border-red-100 bg-red-50/50 hover:bg-red-50 transition-all group">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-xs text-red-700 uppercase tracking-wider">🚨 Stagflation Shock</span>
+                                    <span class="text-xs font-semibold text-red-600 group-hover:translate-x-1 transition-all">Apply &rarr;</span>
+                                </div>
+                                <p class="text-[11px] text-slate-600">Simulate inflation spiking with weakening growth.</p>
+                            </button>
+
+                            <button onclick="applyScenario('productivity')" class="w-full text-left p-3 rounded-lg border border-green-100 bg-green-50/50 hover:bg-green-50 transition-all group">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-xs text-green-700 uppercase tracking-wider">🚀 AI Boom Expansion</span>
+                                    <span class="text-xs font-semibold text-green-600 group-hover:translate-x-1 transition-all">Apply &rarr;</span>
+                                </div>
+                                <p class="text-[11px] text-slate-600">Technological boom lowers costs and inflation.</p>
+                            </button>
+
+                            <button onclick="applyScenario('recession')" class="w-full text-left p-3 rounded-lg border border-blue-100 bg-blue-50/50 hover:bg-blue-50 transition-all group">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-xs text-blue-700 uppercase tracking-wider">📉 Deflationary Slump</span>
+                                    <span class="text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-all">Apply &rarr;</span>
+                                </div>
+                                <p class="text-[11px] text-slate-600">Demand collapse pulls rates toward zero.</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="stressTestBriefCard" class="mt-6 p-3 bg-purple-50 rounded-lg border border-purple-100 hidden">
+                        <div class="flex items-center justify-between mb-1.5 border-b border-purple-100 pb-1">
+                            <span class="text-xs font-bold text-purple-700">Crisis Evaluation</span>
+                            <button onclick="dismissStressBrief()" class="text-xs text-purple-400 hover:text-purple-600">✕</button>
+                        </div>
+                        <p id="stressTestBriefText" class="text-[11px] text-slate-700 leading-relaxed max-h-48 overflow-y-auto custom-scrollbar">
+                            Loading AI evaluation...
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analyst Chat -->
+            <div class="lg:col-span-7">
+                <div class="card border-t-4 border-indigo-600 flex flex-col h-[520px] justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                <span>🤖</span> Gemini Macro Consultant
+                            </h3>
+                            <div class="flex items-center gap-2 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+                                <label for="searchGroundingToggle" class="text-[11px] font-semibold text-slate-600 cursor-pointer flex items-center gap-1.5 select-none">
+                                    🔍 Search Grounding
+                                </label>
+                                <input type="checkbox" id="searchGroundingToggle" checked class="w-3.5 h-3.5 rounded text-blue-600 accent-blue-600 cursor-pointer">
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">
+                            Ask anything about the economy. Gemini uses your current sliders as context.
+                        </p>
+                    </div>
+
+                    <div id="chatLog" class="flex-grow overflow-y-auto mb-4 p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-3 text-xs custom-scrollbar">
+                        <div class="flex gap-2">
+                            <span class="text-base">💼</span>
+                            <div class="bg-white p-3 rounded-lg border border-slate-200 text-slate-700 leading-relaxed shadow-sm">
+                                Hello! I'm your analyst. Adjust the rates on the left to see how it changes my outlook. Ask me about yield curves, dollar strength, or inflation trends.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="chatInput" onkeydown="handleChatKey(event)" placeholder="Type your macro query..." class="flex-grow px-4 py-2.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button onclick="sendChatMessage()" class="p-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md flex items-center justify-center transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <script>
+        const DEFAULT_COUNTRIES = [
+            { id: 'us', name: 'USA', code: 'US', rate: 5.50, inflation: 3.2, color: '#3B82F6', size: 35 },
+            { id: 'uk', name: 'UK', code: 'UK', rate: 5.25, inflation: 3.9, color: '#8B5CF6', size: 30 },
+            { id: 'can', name: 'Canada', code: 'CAN', rate: 5.00, inflation: 3.4, color: '#F97316', size: 25 },
+            { id: 'eu', name: 'Eurozone', code: 'EU', rate: 4.50, inflation: 2.9, color: '#E11D48', size: 45 },
+            { id: 'aus', name: 'Australia', code: 'AUS', rate: 4.35, inflation: 4.1, color: '#10B981', size: 20 },
+            { id: 'sui', name: 'Swiss', code: 'SUI', rate: 1.50, inflation: 1.4, color: '#06B6D4', size: 15 },
+            { id: 'jpn', name: 'Japan', code: 'JPN', rate: 0.10, inflation: 2.8, color: '#F59E0B', size: 25 }
+        ];
+
+        let countries = JSON.parse(JSON.stringify(DEFAULT_COUNTRIES));
+        let barChart, doughnutChart;
+
+        window.onload = function() {
+            renderSliders();
+            initCharts();
+            updateSpectrumStances();
+        };
+
+        function renderSliders() {
+            const container = document.getElementById('slidersContainer');
+            container.innerHTML = '';
+
+            countries.forEach((country) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'p-3 rounded-lg bg-slate-50 border border-slate-100';
+                itemDiv.innerHTML = `
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="text-[11px] font-bold text-slate-800 flex items-center gap-1.5">
+                            <span style="color: ${country.color};">■</span> ${country.name}
+                        </span>
+                        <div class="flex gap-2 text-[10px] text-slate-500">
+                            <span>Rate: <strong class="text-slate-800" id="rateVal_${country.id}">${country.rate.toFixed(2)}%</strong></span>
+                            <span>Infl: <strong class="text-slate-800" id="inflVal_${country.id}">${country.inflation.toFixed(2)}%</strong></span>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[9px] text-slate-400 w-8">Policy</span>
+                            <input type="range" min="-1" max="15" step="0.05" value="${country.rate}" 
+                                oninput="updateRateState('${country.id}', this.value)" 
+                                class="w-full">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[9px] text-slate-400 w-8">CPI</span>
+                            <input type="range" min="-2" max="20" step="0.1" value="${country.inflation}" 
+                                oninput="updateInflationState('${country.id}', this.value)" 
+                                class="w-full">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function updateRateState(countryId, val) {
+            const parsedVal = parseFloat(val);
+            const country = countries.find(c => c.id === countryId);
+            if (country) {
+                country.rate = parsedVal;
+                document.getElementById(`rateVal_${countryId}`).innerText = `${parsedVal.toFixed(2)}%`;
+                debouncedRefresh();
+            }
+        }
+
+        function updateInflationState(countryId, val) {
+            const parsedVal = parseFloat(val);
+            const country = countries.find(c => c.id === countryId);
+            if (country) {
+                country.inflation = parsedVal;
+                document.getElementById(`inflVal_${countryId}`).innerText = `${parsedVal.toFixed(2)}%`;
+                debouncedRefresh();
+            }
+        }
+
+        let debounceTimeout;
+        function debouncedRefresh() {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                updateCharts();
+                updateSpectrumStances();
+            }, 50);
+        }
+
+        function resetDefaults() {
+            countries = JSON.parse(JSON.stringify(DEFAULT_COUNTRIES));
+            renderSliders();
+            updateCharts();
+            updateSpectrumStances();
+        }
+
+        function initCharts() {
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            barChart = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: countries.map(c => c.name),
+                    datasets: [{
+                        label: 'Rate (%)',
+                        data: countries.map(c => c.rate),
+                        backgroundColor: countries.map(c => c.color),
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#F1F5F9' } },
+                        x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+
+            const donutCtx = document.getElementById('doughnutChart').getContext('2d');
+            doughnutChart = new Chart(donutCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: countries.map(c => c.name),
+                    datasets: [{
+                        data: countries.map(c => Math.max(c.rate, 0.5)),
+                        backgroundColor: countries.map(c => c.color),
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } } }
+                }
+            });
+
+            drawPlotly();
+        }
+
+        function updateCharts() {
+            if (barChart && doughnutChart) {
+                barChart.data.datasets[0].data = countries.map(c => c.rate);
+                barChart.update();
+                doughnutChart.data.datasets[0].data = countries.map(c => Math.max(c.rate, 0.5));
+                doughnutChart.update();
+                drawPlotly();
+            }
+        }
+
+        function drawPlotly() {
+            const trace = {
+                x: countries.map(c => c.inflation),
+                y: countries.map(c => c.rate),
+                mode: 'markers+text',
+                type: 'scatter',
+                name: 'Central Banks',
+                text: countries.map(c => c.code),
+                textposition: 'top center',
+                textfont: { family: 'Inter, sans-serif', size: 10 },
+                marker: {
+                    size: countries.map(c => c.size),
+                    color: countries.map(c => c.color),
+                    opacity: 0.8,
+                    line: { width: 1, color: '#fff' }
+                }
+            };
+
+            const layout = {
+                font: { family: 'Inter', size: 10 },
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                margin: { t: 20, l: 40, r: 20, b: 40 },
+                xaxis: { title: 'Inflation (%)', gridcolor: '#F1F5F9', zerolinecolor: '#E2E8F0' },
+                yaxis: { title: 'Base Rate (%)', gridcolor: '#F1F5F9', zerolinecolor: '#E2E8F0' },
+                showlegend: false
+            };
+
+            Plotly.newPlot('plotlyScatter', [trace], layout, { responsive: true, displayModeBar: false });
+        }
+
+        function updateSpectrumStances() {
+            const grid = document.getElementById('spectrumGrid');
+            grid.innerHTML = '';
+
+            const cats = [
+                { title: 'Accommodative', icon: '↘', class: 'text-cyan-700 bg-cyan-50', desc: 'Low rates to stimulate growth.', list: [] },
+                { title: 'Neutral', icon: '↔', class: 'text-emerald-700 bg-emerald-50', desc: 'Balanced policy outlook.', list: [] },
+                { title: 'Restrictive', icon: '↗', class: 'text-blue-700 bg-blue-50', desc: 'High rates to combat inflation.', list: [] }
+            ];
+
+            countries.forEach(c => {
+                if (c.rate < 2.0) cats[0].list.push(c);
+                else if (c.rate <= 4.50) cats[1].list.push(c);
+                else cats[2].list.push(c);
+            });
+
+            cats.forEach((cat) => {
+                const listItems = cat.list.map(c => `<li class="text-[10px] py-1 border-b border-slate-100 last:border-0 font-semibold flex justify-between"><span>${c.name}</span> <span>${c.rate.toFixed(2)}%</span></li>`).join('');
+                const col = document.createElement('div');
+                col.className = 'flex-1 p-4 rounded-xl border border-slate-100 flex flex-col items-center text-center bg-white shadow-sm';
+                col.innerHTML = `
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm mb-2 ${cat.class}">${cat.icon}</div>
+                    <h4 class="font-bold text-xs mb-1">${cat.title}</h4>
+                    <p class="text-[9px] text-slate-400 mb-3">${cat.desc}</p>
+                    <ul class="w-full">${listItems || '<p class="text-[9px] italic text-slate-300">None</p>'}</ul>
+                `;
+                grid.appendChild(col);
+            });
+        }
+
+        // --- AI LOGIC ---
+
+        async function runGeminiCall(userPrompt, systemPrompt, useSearch = false, responseConfig = {}) {
+            const apiKey = document.getElementById('customApiKey').value.trim();
+            if (!apiKey) {
+                throw new Error("Missing Gemini API Key. Please paste it in the header.");
+            }
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userPrompt }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: responseConfig
+            };
+
+            if (useSearch) {
+                payload.tools = [{ google_search: {} }];
+            }
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error(`API Error: ${response.status}`);
+            const result = await response.json();
+            return result;
+        }
+
+        function compileMarkdown(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>');
+        }
+
+        async function generateAiBrief() {
+            const btn = document.getElementById('btnGenerateBrief');
+            const spinner = document.getElementById('briefSpinner');
+            const content = document.getElementById('briefingContent');
+            const container = document.getElementById('briefingContainer');
+
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+            container.classList.remove('hidden');
+            content.innerHTML = "Consulting global macro models...";
+
+            const context = countries.map(c => `${c.name}: ${c.rate}% rate, ${c.inflation}% infl`).join("; ");
+            const prompt = `Evaluate these custom macroeconomic indicators: ${context}. Highlight immediate risks to global bonds and dollar strength. Keep it under 200 words.`;
+            const sys = "You are a lead macroeconomic analyst at a major investment bank.";
+
+            try {
+                const res = await runGeminiCall(prompt, sys, false);
+                const text = res.candidates[0].content.parts[0].text;
+                content.innerHTML = compileMarkdown(text);
+            } catch (e) {
+                content.innerHTML = `<span class="text-red-500">Error: ${e.message}</span>`;
+            } finally {
+                btn.disabled = false;
+                spinner.classList.add('hidden');
+            }
+        }
+
+        function closeBrief() {
+            document.getElementById('briefingContainer').classList.add('hidden');
+        }
+
+        async function draftGovernorSpeech() {
+            const box = document.getElementById('speechBox');
+            const gov = document.getElementById('governorSelect').value;
+            box.innerHTML = "Generating statement...";
+
+            const context = countries.map(c => `${c.name}: ${c.rate}% rate, ${c.inflation}% infl`).join("; ");
+            const prompt = `Write a realistic 120-word press opening for ${gov} based on: ${context}. Maintain their actual professional persona.`;
+            
+            try {
+                const res = await runGeminiCall(prompt, "Professional Central Bank Writer.", false);
+                box.innerHTML = `"${compileMarkdown(res.candidates[0].content.parts[0].text)}"`;
+            } catch (e) { box.innerHTML = e.message; }
+        }
+
+        async function predictYieldCurve() {
+            const container = document.getElementById('yieldCurveContainer');
+            container.innerHTML = "Forecasting bond market response...";
+            
+            const context = countries.map(c => `${c.name}: ${c.rate}% rate, ${c.inflation}% infl`).join("; ");
+            const prompt = `Project US Treasury 2Y, 10Y, and 30Y yields based on: ${context}. Return a simple table.`;
+
+            try {
+                const res = await runGeminiCall(prompt, "Fixed income strategist.", false);
+                container.innerHTML = `<div class="text-[11px]">${compileMarkdown(res.candidates[0].content.parts[0].text)}</div>`;
+            } catch (e) { container.innerHTML = e.message; }
+        }
+
+        async function applyScenario(type) {
+            const card = document.getElementById('stressTestBriefCard');
+            const text = document.getElementById('stressTestBriefText');
+            card.classList.remove('hidden');
+            text.innerHTML = "Simulating spillovers...";
+
+            if (type === 'stagflation') {
+                countries.forEach(c => { c.rate += 1.5; c.inflation += 4.0; });
+            } else if (type === 'productivity') {
+                countries.forEach(c => { c.rate = Math.max(0.5, c.rate - 1.5); c.inflation = 1.0; });
+            } else if (type === 'recession') {
+                countries.forEach(c => { c.rate = 0.25; c.inflation = -0.5; });
+            }
+            
+            renderSliders();
+            updateCharts();
+            updateSpectrumStances();
+
+            const prompt = `Analyze the ${type} scenario in a global context. What happens to credit spreads?`;
+            try {
+                const res = await runGeminiCall(prompt, "IMF Risk Evaluator.", false);
+                text.innerHTML = compileMarkdown(res.candidates[0].content.parts[0].text);
+            } catch (e) { text.innerHTML = e.message; }
+        }
+
+        function dismissStressBrief() { document.getElementById('stressTestBriefCard').classList.add('hidden'); }
+
+        function handleChatKey(e) { if (e.key === 'Enter') sendChatMessage(); }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const log = document.getElementById('chatLog');
+            const query = input.value.trim();
+            if (!query) return;
+
+            const userDiv = document.createElement('div');
+            userDiv.className = 'flex gap-2 justify-end';
+            userDiv.innerHTML = `<div class="bg-indigo-600 text-white p-2 rounded-lg max-w-[85%] shadow-sm">${query}</div><span>👤</span>`;
+            log.appendChild(userDiv);
+            input.value = '';
+            log.scrollTop = log.scrollHeight;
+
+            const loadDiv = document.createElement('div');
+            loadDiv.className = 'flex gap-2 italic text-slate-400';
+            loadDiv.innerHTML = `<span>💼</span><div>Analysing...</div>`;
+            log.appendChild(loadDiv);
+
+            const context = countries.map(c => `${c.name}: ${c.rate}%`).join(", ");
+            const ground = document.getElementById('searchGroundingToggle').checked;
+
+            try {
+                const res = await runGeminiCall(query, `Technical Macro Strategist. Slider Context: ${context}`, ground);
+                loadDiv.remove();
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'flex gap-2';
+                aiDiv.innerHTML = `<span>💼</span><div class="bg-white p-2 rounded-lg border border-slate-200 text-slate-700 max-w-[85%] shadow-sm">${compileMarkdown(res.candidates[0].content.parts[0].text)}</div>`;
+                log.appendChild(aiDiv);
+                log.scrollTop = log.scrollHeight;
+            } catch (e) {
+                loadDiv.innerHTML = `<span class="text-red-500">Error: ${e.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
